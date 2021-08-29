@@ -54,18 +54,20 @@ class Ground{
     //this class is for describing the ground
     //turns bluer whenever 10 raindrops hit it
     constructor(){
-        this.wetness=0;
+        this.wetness=5;
         this.raincount=0;
     }
     makeWetter(){
         this.raincount++;
         if(this.raincount==10){
-            this.wetness++;
+            if(this.wetness<100){
+            this.wetness+=5;
+            }
             this.raincount=0;
         }
     }
     drawthis(){
-        fill([0,255,255*Math.atan(this.wetness/50)]);
+        fill([0,255,255*this.wetness/100]);
         rect(0,200,400,100);
     }
 }
