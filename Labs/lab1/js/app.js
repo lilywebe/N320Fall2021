@@ -5,11 +5,11 @@ class RainDrop {
         this.ry=0;
         this.speed=3+ Math.random()*2;
     } 
-
+    //move raindrop vertically
    update(){
         this.ry+=this.speed;
     }
-
+    //draw rain drops
     drawthis(){
         noStroke();
         fill([179, 217, 255]);
@@ -19,18 +19,20 @@ class RainDrop {
 }
 
 class RainManager{
-    //this class takes the raindrop description and makes many of them
-    //also it finds when they've hit the ground
+    //create array of drops and set update to update every other time
     constructor(){
         this.drops=[];
         this.updatecount=2;
     }
     update(){
+        //update to create a raindrop every other time
         if(this.updatecount==2){
             this.drops.push(new RainDrop());
             this.updatecount=0; 
         }
         this.updatecount++;
+        //update every drop and check if it hit the ground
+        //if hit, delete from list and make ground wetter
         this.drops.forEach(drop => {
             drop.update();
             if(drop.ry>=250){
@@ -41,6 +43,7 @@ class RainManager{
         });
     
     }
+    //draw each drop
     drawthis(){
         this.drops.forEach(drop => {
             drop.drawthis();
@@ -51,12 +54,12 @@ class RainManager{
 }
 
 class Ground{
-    //this class is for describing the ground
-    //turns bluer whenever 10 raindrops hit it
     constructor(){
+        //start wetness at 5%
         this.wetness=5;
         this.raincount=0;
     }
+    //update wetness to reflect number of raindrops to have hit the ground
     makeWetter(){
         this.raincount++;
         if(this.raincount==10){
@@ -66,6 +69,7 @@ class Ground{
             this.raincount=0;
         }
     }
+    //draw ground with wetness assigned by makeWetter
     drawthis(){
         fill([0,255,255*this.wetness/100]);
         rect(0,200,400,100);
