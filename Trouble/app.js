@@ -197,8 +197,35 @@ class View{
         svg.appendChild(circle);
         
     });
+
+   
+    //buttons
+    var randroll = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    var dicepos = [200,150];
+    randroll.setAttribute('cx', dicepos[0]);
+    randroll.setAttribute('cy', dicepos[1]);
+    randroll.setAttribute('r', 30);
+    randroll.setAttribute('fill', "yellow");
+    var randomroll= Math.floor(Math.random()*6)+1;
+    randroll.setAttribute('onclick', () => this.showRoll(randomroll, svg));
+    svg.appendChild(randroll);
+
+
     document.getElementById("gameview").innerHTML="";
     document.getElementById("gameview").appendChild(svg);
+
+    }
+
+    showRoll(randomroll, svg){
+        var rolltext = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        rolltext.setAttribute('x', 200);
+        rolltext.setAttribute('y', 150);
+        rolltext.setAttribute('textContent', randomroll);
+        svg.appendChild(rolltext);
+
+
+
+        
 
     }
 
