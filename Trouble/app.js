@@ -6,6 +6,17 @@ class GameState {
         this.colors = ["red", "yellow", "green", "blue"];
         this.winhappened=false;
         this.wincolor=null;
+        this.click=false;
+        this.oldpotential=null;
+    }
+
+    lastMovement(position){
+        this.pieces.forEach(piece =>{
+            if(piece.position==position){
+                this.oldpotential=piece.potentialmove;
+            }
+
+        })
     }
 
     winner(){
@@ -331,15 +342,28 @@ class View{
             circle.setAttribute('cy', this.adjust(pos[1]));
             circle.setAttribute('r', 10);
             circle.setAttribute('fill', piece.color);
-            //THIS IS WRONG
             if(piece.potentialmove!=null){
                 circle.addEventListener('click', ()=>controller.moveHappened(piece.position));
+                TweenLite.to(circle, 5, { fill: "white" });
+            }
+            else if(gs.oldpotential==piece.position && gs.click==true){
+                TweenLite.from(circle, {duration:2, x:piece.position[0], y:piece.position[1], alpha:0});
             }
             svg.appendChild(circle);
             
         });
     }
 
+
+    /* potential fill animations to show which pegs are usable
+     skyAnim() {
+        var tl = new TimelineMax({repeat:-1});
+        tl.to("#sky", 2, {fill: '#EDCEB9'})
+        tl.to("#sky", 2, {fill: '#33474F'}, "+=1") //start 1 second later
+        tl.to("#sky", 2, {fill: '#ABD9EF'}, "+=1") //start 1 second later
+        return tl;
+        }
+*/
     showRoll(randomroll, svg){
         var rolltext = document.createElementNS("http://www.w3.org/2000/svg", "text");
         var rollpos=[5,5]
@@ -391,9 +415,12 @@ class Controller {
     }
 
     moveHappened(position){
+        this.gs.click=true;
+        this.gs.lastMovement(position);
         this.gs.makemove(position);
         this.view = new View();
         this.view.makeView(this.gs);
+        this.gs.click=false;
     }
 
     madeNoMove(){
