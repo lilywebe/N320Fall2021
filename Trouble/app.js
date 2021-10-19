@@ -276,14 +276,16 @@ class View {
             else {
                 win.setAttribute('fill', gs.wincolor);
             }
-            //add click event to start new game
-            //win.addEventListener('click', ()=>controller.madeNoMove());
+            
             svg.appendChild(win);
             var wintext = document.createElementNS("http://www.w3.org/2000/svg", "text");
             var wintextpos = [6.5, 7.5];
             wintext.setAttribute('x', this.adjust(wintextpos[0]));
             wintext.setAttribute('y', this.adjust(wintextpos[1]));
             wintext.textContent = gs.wincolor + " won!";
+
+            //Restart Button
+            this.restartScreen(svg, gs.winhappened);
             svg.appendChild(wintext);
 
         }
@@ -363,11 +365,37 @@ class View {
             })
             svg.appendChild(instructions);
             this.addPiecestoScreen(gs, svg);
+
+            //restart button
+            this.restartScreen(svg);
         }
 
         document.getElementById("gameview").innerHTML = "";
         document.getElementById("gameview").appendChild(svg);
 
+    }
+
+    restartScreen(svg, win){
+        //Restart Button
+        var restart = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        if(win==true){
+        var restartpos = [5, 11];
+        }
+        else{
+            var restartpos=[15,12];
+        }
+        restart.setAttribute('x', this.adjust(restartpos[0]));
+        restart.setAttribute('y', this.adjust(restartpos[1]));
+        restart.setAttribute('height', 50);
+        restart.setAttribute('width', 200);
+        restart.setAttribute('fill', "yellow");
+        restart.addEventListener('click', () => location.reload());
+        svg.appendChild(restart);
+        var restarttext = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        restarttext.setAttribute('x', this.adjust(restartpos[0] + 1.25));
+        restarttext.setAttribute('y', this.adjust(restartpos[1] + .75));
+        restarttext.textContent = "Restart Game";
+        svg.appendChild(restarttext);
     }
 
     addPiecestoScreen(gs, svg) {
